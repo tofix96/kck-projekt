@@ -28,6 +28,7 @@ class _ClientTaskListScreenState extends State<ClientTaskListScreen> {
     );
     String? workerid = await taskService.takeIdClient(taskId); // get workerid where taskid = $taskid and status = completed
     _showReviewDialog(taskId, workerid!);
+
     _refreshTasks();
   } catch (e) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -89,7 +90,7 @@ class _ClientTaskListScreenState extends State<ClientTaskListScreen> {
                       int.parse(ratingController.text),
                       commentController.text,
                     );
-                    Navigator.of(context).pop(true); // Zwracamy true po dodaniu recenzji
+                    Navigator.of(context).pop(true);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('Review added successfully')),
                     );
@@ -107,7 +108,7 @@ class _ClientTaskListScreenState extends State<ClientTaskListScreen> {
       },
     ).then((value) {
       if (value == true) {
-        _refreshTasks(); // Odświeżenie zadań po dodaniu recenzji
+        _refreshTasks();
       }
     });
   }

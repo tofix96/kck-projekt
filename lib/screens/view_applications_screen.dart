@@ -12,7 +12,7 @@ class ViewApplicationsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('View Applications'),
+        title: const Text('View Applications'),
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: taskService.fetchApplications(taskId),
@@ -29,7 +29,6 @@ class ViewApplicationsScreen extends StatelessWidget {
               itemCount: applications.length,
               itemBuilder: (context, index) {
                 final application = applications[index];
-                print('Application data: $application');
                 return ListTile(
                   title: Text(application['worker_name']),
                   subtitle: Text('Status: ${application['status']}'),
@@ -45,6 +44,7 @@ class ViewApplicationsScreen extends StatelessWidget {
                   onTap: () async {
                     try {
                       final userDetails = await taskService.getUserDetails(application['worker_id']);
+                      final averageRating = await taskService.getAverageRating(application['worker_id']); //zmienione
                       showDialog(
                         context: context,
                         builder: (context) {
@@ -57,6 +57,7 @@ class ViewApplicationsScreen extends StatelessWidget {
                                 Text('Email: ${userDetails['email'] ?? 'N/A'}'),
                                 Text('Phone Number: ${userDetails['phone_number'] ?? 'N/A'}'),
                                 Text('Age: ${userDetails['age'] ?? 'N/A'}'),
+                                Text('Average Rating: ${averageRating > 0 ? averageRating.toStringAsFixed(2) : 'No ratings yet'}'), //zmienione
                               ],
                             ),
                             actions: <Widget>[

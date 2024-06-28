@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as io;
 import 'package:shelf_router/shelf_router.dart';
@@ -6,6 +5,7 @@ import 'package:postgres/postgres.dart';
 import 'package:shelf_cors_headers/shelf_cors_headers.dart';
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
+
 
 final _headers = {
   'Access-Control-Allow-Origin': '*',
@@ -125,23 +125,36 @@ void main() async {
         return Response.internalServerError(body: 'Error logging in');
       }
     })
-      ..post('/register', (Request request) async {
+         ..post('/register', (Request request) async {
       try {
         final payload = await request.readAsString();
         final data = Uri.splitQueryString(payload);
 
         final email = data['email']!;
-        final password = hashPassword(data['password']!);
+        final password = data['password']!;
         final name = data['name']!;
         final role = data['role']!;
         final phoneNumber = data['phone_number']!;
         final age = int.parse(data['age']!);
 
+        // Walidacja email
+        final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+        if (!emailRegex.hasMatch(email)) {
+          return Response.badRequest(body: 'Invalid email format');
+        }
+
+        // Walidacja hasła
+        if (password.length < 8) {
+          return Response.badRequest(body: 'Password must be at least 8 characters long');
+        }
+
+        final hashedPassword = hashPassword(password);
+
         await dbConnection.query(
           'INSERT INTO users (email, password, name, role, phone_number, age) VALUES (@Email, @Password, @Name, @Role, @PhoneNumber, @Age)',
           substitutionValues: {
             'Email': email,
-            'Password': password,
+            'Password': hashedPassword,
             'Name': name,
             'Role': role,
             'PhoneNumber': phoneNumber,
@@ -155,6 +168,7 @@ void main() async {
         return Response.internalServerError(body: 'Error registering user');
       }
     })
+
     ..put('/tasks/<id>', (Request request, String id) async {
   try {
     final payload = await request.readAsString();
@@ -190,7 +204,6 @@ void main() async {
     //Kończenie zadań
    ..put('/tasks/<id>/complete', (Request request, String id) async {
   try {
-    // Aktualizacja statusu zadania na 'completed'
     await dbConnection.query(
       'UPDATE tasks SET status = @status WHERE id = @id',
       substitutionValues: {
@@ -199,7 +212,6 @@ void main() async {
       },
     );
 
-    // Aktualizacja statusu w tabeli applications na 'completed'
     await dbConnection.query(
       'UPDATE applications SET status = @status WHERE task_id = @task_id',
       substitutionValues: {
@@ -214,21 +226,36 @@ void main() async {
     return Response.internalServerError(body: 'Error completing task');
   }
 })
-..delete('/tasks/<id>', (Request request, String id) async {
-      try {
-        await dbConnection.query(
-          'DELETE FROM tasks WHERE id = @id',
+  ..delete('/tasks/<id>', (Request request, String id) async {
+    try {
+      // Usuń powiązane aplikacje
+      await dbConnection.query(
+        'DELETE FROM applications WHERE task_id = @id',
+        substitutionValues: {
+          'id': int.parse(id),
+        },
+      );
+       await dbConnection.query(
+          'DELETE FROM reviews WHERE task_id = @id',
           substitutionValues: {
             'id': int.parse(id),
           },
         );
+      // Usuń zadanie
+      await dbConnection.query(
+        'DELETE FROM tasks WHERE id = @id',
+        substitutionValues: {
+          'id': int.parse(id),
+        },
+      );
 
-        return Response.ok('Task deleted', headers: _headers);
-      } catch (e) {
-        print('Error deleting task: $e');
-        return Response.internalServerError(body: 'Error deleting task');
-      }
-    })
+      return Response.ok('Task and related applications deleted', headers: _headers);
+    } catch (e) {
+      print('Error deleting task and related applications: $e');
+      return Response.internalServerError(body: 'Error deleting task and related applications');
+    }
+  })
+
       ..get('/applications', (Request request) async {
   final taskId = request.url.queryParameters['task_id'];
   final workerId = request.url.queryParameters['worker_id'];
@@ -334,7 +361,7 @@ void main() async {
   }
 })
 
-
+  //wyświetlanie aplikacji
 
     ..post('/applications', (Request request) async {
       try {
@@ -344,7 +371,6 @@ void main() async {
         final taskId = data['task_id']!;
         final workerId = data['worker_id']!;
 
-        // Check if the worker already applied for this task
         final existingApplication = await dbConnection.query(
           'SELECT * FROM applications WHERE task_id = @task_id AND worker_id = @worker_id',
           substitutionValues: {
@@ -423,6 +449,28 @@ void main() async {
         return Response.internalServerError(body: 'Error updating application');
       }
     })
+   ..get('/users/<id>/average-rating', (Request request, String id) async {
+  try {
+    final result = await dbConnection.query(
+      'SELECT AVG(rating) FROM reviews WHERE worker_id = @id',
+      substitutionValues: {
+        'id': int.parse(id),
+      },
+    );
+
+    if (result.isNotEmpty && result.first[0] != null) {
+      final averageRating = double.parse(result.first[0].toString());
+      return Response.ok(jsonEncode({'average_rating': averageRating}), headers: _headers);
+    } else {
+      return Response.ok(jsonEncode({'average_rating': 0.0}), headers: _headers);
+    }
+  } catch (e) {
+    print('Error fetching average rating: $e');
+    return Response.internalServerError(body: 'Error fetching average rating');
+  }
+})
+
+
     ..get('/users/<id>', (Request request, String id) async {
   try {
     final result = await dbConnection.query(
