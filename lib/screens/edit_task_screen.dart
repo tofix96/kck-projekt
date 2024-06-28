@@ -4,7 +4,7 @@ import '../services/task_service.dart';
 class EditTaskScreen extends StatefulWidget {
   final Map<String, dynamic> task;
 
-  EditTaskScreen({required this.task});
+  const EditTaskScreen({super.key, required this.task});
 
   @override
   _EditTaskScreenState createState() => _EditTaskScreenState();
@@ -30,7 +30,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Task'),
+        title: const Text('Edit Task'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -38,20 +38,20 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
           children: <Widget>[
             TextField(
               controller: titleController,
-              decoration: InputDecoration(labelText: 'Title'),
+              decoration: const InputDecoration(labelText: 'Title'),
             ),
             TextField(
               controller: descriptionController,
-              decoration: InputDecoration(labelText: 'Description'),
+              decoration: const InputDecoration(labelText: 'Description'),
             ),
             TextField(
               controller: budgetController,
-              decoration: InputDecoration(labelText: 'Budget'),
+              decoration: const InputDecoration(labelText: 'Budget'),
               keyboardType: TextInputType.number,
             ),
             TextField(
               controller: deadlineController,
-              decoration: InputDecoration(labelText: 'Deadline (YYYY-MM-DD)'),
+              decoration: const InputDecoration(labelText: 'Deadline (YYYY-MM-DD)'),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -69,14 +69,14 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        title: Text('Error'),
+                        title: const Text('Error'),
                         content: Text(e.toString()),
                         actions: <Widget>[
                           ElevatedButton(
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: Text('OK'),
+                            child: const Text('OK'),
                           ),
                         ],
                       );
@@ -84,7 +84,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                   );
                 }
               },
-              child: Text('Save Changes'),
+              child: const Text('Save Changes'),
             ),
           ],
         ),

@@ -3,9 +3,12 @@ import 'dart:convert';
 
 class TaskService {
   static const String baseUrl = 'http://localhost:8080';
+  final http.Client client;
+
+  TaskService({http.Client? client}) : client = client ?? http.Client();
 
   Future<List<Map<String, dynamic>>> fetchTasks() async {
-    final response = await http.get(Uri.parse('$baseUrl/tasks'));
+    final response = await client.get(Uri.parse('$baseUrl/tasks'));
 
     if (response.statusCode == 200) {
       List<dynamic> tasksJson = jsonDecode(response.body);
@@ -14,7 +17,6 @@ class TaskService {
       throw Exception('Failed to load tasks');
     }
   }
-
   Future<void> createTask(String title, String description, double budget,
       DateTime deadline, String clientId) async {
     final response = await http.post(

@@ -126,48 +126,47 @@ void main() async {
       }
     })
          ..post('/register', (Request request) async {
-      try {
-        final payload = await request.readAsString();
-        final data = Uri.splitQueryString(payload);
+          try {
+            final payload = await request.readAsString();
+            final data = Uri.splitQueryString(payload);
 
-        final email = data['email']!;
-        final password = data['password']!;
-        final name = data['name']!;
-        final role = data['role']!;
-        final phoneNumber = data['phone_number']!;
-        final age = int.parse(data['age']!);
+            final email = data['email']!;
+            final password = data['password']!;
+            final name = data['name']!;
+            final role = data['role']!;
+            final phoneNumber = data['phone_number']!;
+            final age = int.parse(data['age']!);
 
-        // Walidacja email
-        final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
-        if (!emailRegex.hasMatch(email)) {
-          return Response.badRequest(body: 'Invalid email format');
-        }
+            final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+            if (!emailRegex.hasMatch(email)) {
+              return Response.badRequest(body: 'Invalid email format');
+            }
 
-        // Walidacja hasła
-        if (password.length < 8) {
-          return Response.badRequest(body: 'Password must be at least 8 characters long');
-        }
+            if (password.length < 8) {
+              return Response.badRequest(body: 'Password too short');
+            }
 
-        final hashedPassword = hashPassword(password);
+            final hashedPassword = hashPassword(password);
 
-        await dbConnection.query(
-          'INSERT INTO users (email, password, name, role, phone_number, age) VALUES (@Email, @Password, @Name, @Role, @PhoneNumber, @Age)',
-          substitutionValues: {
-            'Email': email,
-            'Password': hashedPassword,
-            'Name': name,
-            'Role': role,
-            'PhoneNumber': phoneNumber,
-            'Age': age,
-          },
-        );
+            await dbConnection.query(
+              'INSERT INTO users (email, password, name, role, phone_number, age) VALUES (@Email, @Password, @Name, @Role, @PhoneNumber, @Age)',
+              substitutionValues: {
+                'Email': email,
+                'Password': hashedPassword,
+                'Name': name,
+                'Role': role,
+                'PhoneNumber': phoneNumber,
+                'Age': age,
+              },
+            );
 
-        return Response.ok('User registered', headers: _headers);
-      } catch (e) {
-        print('Error registering user: $e');
-        return Response.internalServerError(body: 'Error registering user');
-      }
-    })
+            return Response.ok('User registered', headers: _headers);
+          } catch (e) {
+            print('Error registering user: $e');
+            return Response.internalServerError(body: 'Error registering user');
+          }
+        })
+
 
     ..put('/tasks/<id>', (Request request, String id) async {
   try {

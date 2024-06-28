@@ -4,6 +4,8 @@ import '../services/task_service.dart';
 import '../providers/auth_provider.dart';
 
 class WorkerTaskListScreen extends StatefulWidget {
+  const WorkerTaskListScreen({super.key});
+
   @override
   _WorkerTaskListScreenState createState() => _WorkerTaskListScreenState();
 }
@@ -24,17 +26,17 @@ class _WorkerTaskListScreenState extends State<WorkerTaskListScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Available Tasks'),
+        title: const Text('Available Tasks'),
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: _tasksFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No tasks available'));
+            return const Center(child: Text('No tasks available'));
           } else {
             final tasks = snapshot.data!
                 .where((task) => task['status'] == 'approved' || task['status'] == 'accepted')
@@ -48,7 +50,7 @@ class _WorkerTaskListScreenState extends State<WorkerTaskListScreen> {
                       task['id'], authProvider.user!['id']),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
                       return Center(child: Text('Error: ${snapshot.error}'));
                     } else {
@@ -64,14 +66,14 @@ class _WorkerTaskListScreenState extends State<WorkerTaskListScreen> {
                                       task['id'], authProvider.user!['id']);
                                   if (success) {
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text('Applied for task')),
+                                      const SnackBar(content: Text('Applied for task')),
                                     );
                                     setState(() {
                                       _tasksFuture = taskService.fetchTasks();
                                     });
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text('Failed to apply for task')),
+                                      const SnackBar(content: Text('Failed to apply for task')),
                                     );
                                   }
                                 },

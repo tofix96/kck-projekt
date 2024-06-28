@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../services/task_service.dart';
 
 class ModeratorTaskListScreen extends StatefulWidget {
+  const ModeratorTaskListScreen({super.key});
+
   @override
   _ModeratorTaskListScreenState createState() => _ModeratorTaskListScreenState();
 }
@@ -17,7 +19,7 @@ class _ModeratorTaskListScreenState extends State<ModeratorTaskListScreen> {
     try {
       await taskService.deleteTask(taskId);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Task deleted')),
+        const SnackBar(content: Text('Task deleted')),
       );
       _refreshTasks();
     } catch (e) {
@@ -31,17 +33,17 @@ class _ModeratorTaskListScreenState extends State<ModeratorTaskListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Moderator Task List'),
+        title: const Text('Moderator Task List'),
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: taskService.fetchTasks(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No tasks available'));
+            return const Center(child: Text('No tasks available'));
           } else {
             final tasks = snapshot.data!;
             return RefreshIndicator(
@@ -61,15 +63,15 @@ class _ModeratorTaskListScreenState extends State<ModeratorTaskListScreen> {
                             onPressed: () async {
                               await taskService.updateTaskStatus(task['id'], 'accepted');
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Task accepted')),
+                                const SnackBar(content: Text('Task accepted')),
                               );
                               _refreshTasks();
                             },
-                            child: Text('Accept'),
+                            child: const Text('Accept'),
                           ),
                          Text('Status: ${task['status']}'),
                         IconButton(
-                          icon: Icon(Icons.delete),
+                          icon: const Icon(Icons.delete),
                           onPressed: () {
                             _deleteTask(task['id']);
                           },

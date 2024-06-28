@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
 
 class AuthProvider with ChangeNotifier {
-  final AuthService _authService = AuthService();
+  final AuthService _authService;
   Map<String, dynamic>? _user;
+
+  AuthProvider({AuthService? authService}) : _authService = authService ?? AuthService();
 
   Map<String, dynamic>? get user => _user;
 

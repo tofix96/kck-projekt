@@ -2,20 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 
-class RegistrationScreen extends StatelessWidget {
+class RegistrationScreen extends StatefulWidget {
+
+  const RegistrationScreen({super.key});
+
+  @override
+  State<RegistrationScreen> createState() => _RegistrationScreenState();
+}
+
+class _RegistrationScreenState extends State<RegistrationScreen> {
   final TextEditingController emailController = TextEditingController();
+
   final TextEditingController passwordController = TextEditingController();
+
   final TextEditingController nameController = TextEditingController();
+
   final TextEditingController phoneNumberController = TextEditingController();
+
   final TextEditingController ageController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
+
   String selectedRole = 'client';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Register'),
+        title: const Text('Register'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -25,7 +39,7 @@ class RegistrationScreen extends StatelessWidget {
             children: <Widget>[
               TextFormField(
                 controller: nameController,
-                decoration: InputDecoration(labelText: 'Name'),
+                decoration: const InputDecoration(labelText: 'Name'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your name';
@@ -33,17 +47,21 @@ class RegistrationScreen extends StatelessWidget {
                   return null;
                 },
               ),
-              TextFormField(
+               TextFormField(
                 controller: emailController,
                 decoration: InputDecoration(labelText: 'Email'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your email';
                   }
+                  final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+                  if (!emailRegex.hasMatch(value)) {
+                    return 'Please enter a valid email';
+                  }
                   return null;
                 },
               ),
-              TextFormField(
+               TextFormField(
                 controller: passwordController,
                 decoration: InputDecoration(labelText: 'Password'),
                 obscureText: true,
@@ -51,12 +69,15 @@ class RegistrationScreen extends StatelessWidget {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your password';
                   }
+                  if (value.length < 8) {
+                    return 'Password too short';
+                  }
                   return null;
                 },
               ),
               TextFormField(
                 controller: phoneNumberController,
-                decoration: InputDecoration(labelText: 'Phone Number'),
+                decoration: const InputDecoration(labelText: 'Phone Number'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your phone number';
@@ -66,7 +87,7 @@ class RegistrationScreen extends StatelessWidget {
               ),
               TextFormField(
                 controller: ageController,
-                decoration: InputDecoration(labelText: 'Age'),
+                decoration: const InputDecoration(labelText: 'Age'),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -77,7 +98,7 @@ class RegistrationScreen extends StatelessWidget {
               ),
               DropdownButtonFormField<String>(
                 value: selectedRole,
-                items: [
+                items: const [
                   DropdownMenuItem(value: 'client', child: Text('Client')),
                   DropdownMenuItem(value: 'worker', child: Text('Worker')),
                   DropdownMenuItem(value: 'moderator', child: Text('Moderator')),
@@ -85,7 +106,7 @@ class RegistrationScreen extends StatelessWidget {
                 onChanged: (value) {
                   selectedRole = value!;
                 },
-                decoration: InputDecoration(labelText: 'Role'),
+                decoration: const InputDecoration(labelText: 'Role'),
               ),
               ElevatedButton(
                 onPressed: () async {
@@ -106,14 +127,14 @@ class RegistrationScreen extends StatelessWidget {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            title: Text('Registration Failed'),
+                            title: const Text('Registration Failed'),
                             content: Text(e.toString()),
                             actions: <Widget>[
                               ElevatedButton(
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
-                                child: Text('OK'),
+                                child: const Text('OK'),
                               ),
                             ],
                           );
@@ -122,7 +143,7 @@ class RegistrationScreen extends StatelessWidget {
                     }
                   }
                 },
-                child: Text('Register'),
+                child: const Text('Register'),
               ),
             ],
           ),

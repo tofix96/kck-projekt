@@ -23,7 +23,7 @@ class AuthService {
     }
   }
 
-  Future<void> register(String email, String password, String name, String role, String phoneNumber, String age) async {
+   Future<void> register(String email, String password, String name, String role, String phoneNumber, String age) async {
     final response = await http.post(
       Uri.parse('$baseUrl/register'),
       headers: <String, String>{
@@ -39,10 +39,14 @@ class AuthService {
       },
     );
 
-    if (response.statusCode != 200) {
+    if (response.statusCode == 400) {
+      final errorMessage = response.body;
+      throw Exception(errorMessage);
+    } else if (response.statusCode != 200) {
       throw Exception('Failed to register');
     }
   }
+
 
   Future<void> deleteAccount(String userId) async {
     final response = await http.delete(

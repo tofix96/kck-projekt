@@ -4,7 +4,7 @@ import '../services/task_service.dart';
 class ViewApplicationsScreen extends StatelessWidget {
   final String taskId;
 
-  ViewApplicationsScreen({required this.taskId});
+  ViewApplicationsScreen({super.key, required this.taskId});
 
   final TaskService taskService = TaskService();
 
@@ -18,11 +18,11 @@ class ViewApplicationsScreen extends StatelessWidget {
         future: taskService.fetchApplications(taskId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No applications found'));
+            return const Center(child: Text('No applications found'));
           } else {
             final applications = snapshot.data!;
             return ListView.builder(
@@ -39,7 +39,7 @@ class ViewApplicationsScreen extends StatelessWidget {
                             await taskService.assignWorkerToTask(application['id']);
                             Navigator.pop(context, true);
                           },
-                    child: Text('Assign'),
+                    child: const Text('Assign'),
                   ),
                   onTap: () async {
                     try {
@@ -49,7 +49,7 @@ class ViewApplicationsScreen extends StatelessWidget {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            title: Text('Worker Details'),
+                            title: const Text('Worker Details'),
                             content: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
@@ -65,13 +65,13 @@ class ViewApplicationsScreen extends StatelessWidget {
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
-                                child: Text('Close'),
+                                child: const Text('Close'),
                               ),
                               ElevatedButton(
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
-                                child: Text('Chat'),
+                                child: const Text('Chat'),
                               )
                             ],
                           );

@@ -17,10 +17,12 @@ import 'providers/auth_provider.dart';
 import 'screens/all_task_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -45,25 +47,25 @@ class MyApp extends StatelessWidget {
             style: ButtonStyle(
               backgroundColor: WidgetStateProperty.all<Color>(Colors.lightBlue.shade200), // Kolor tła przycisku
               foregroundColor: WidgetStateProperty.all<Color>(Colors.black87), // Kolor tekstu
-              padding: WidgetStateProperty.all<EdgeInsets>(EdgeInsets.symmetric(horizontal: 24, vertical: 12)),
+              padding: WidgetStateProperty.all<EdgeInsets>(const EdgeInsets.symmetric(horizontal: 24, vertical: 12)),
               textStyle: WidgetStateProperty.all<TextStyle>(
-                TextStyle(fontSize: 16),
+                const TextStyle(fontSize: 16),
               ),
             ),
           ),
         ),
         initialRoute: '/',
         routes: {
-          '/': (context) => HomeScreen(),
+          '/': (context) => const HomeScreen(),
           '/login': (context) => LoginScreen(),
-          '/register': (context) => RegistrationScreen(),
-          '/create-task': (context) => CreateTaskScreen(),
+          '/register': (context) => const RegistrationScreen(),
+          '/create-task': (context) => const CreateTaskScreen(),
           '/task-list': (context) => TaskListScreen(),
-          '/profile': (context) => ProfileScreen(),
+          '/profile': (context) => const ProfileScreen(),
           '/edit-profile': (context) => EditProfileScreen(),
-          '/moderator-task-list': (context) => ModeratorTaskListScreen(),
-          '/worker-task-list': (context) => WorkerTaskListScreen(),
-          '/client-task-list': (context) => ClientTaskListScreen(),
+          '/moderator-task-list': (context) => const ModeratorTaskListScreen(),
+          '/worker-task-list': (context) => const WorkerTaskListScreen(),
+          '/client-task-list': (context) => const ClientTaskListScreen(),
           '/worker-assigned-tasks': (context) => WorkerAssignedTasksScreen(),
           '/all-tasks': (context) => AllTasksScreen(),
         },

@@ -6,6 +6,8 @@ class EditProfileScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
 
+  EditProfileScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
@@ -14,7 +16,7 @@ class EditProfileScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Profile'),
+        title: const Text('Edit Profile'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -23,21 +25,17 @@ class EditProfileScreen extends StatelessWidget {
             children: <Widget>[
               TextFormField(
                 controller: nameController,
-                decoration: InputDecoration(labelText: 'Name'),
+                decoration: const InputDecoration(labelText: 'Name'),
               ),
               TextFormField(
                 controller: emailController,
-                decoration: InputDecoration(labelText: 'Email'),
+                decoration: const InputDecoration(labelText: 'Email'),
               ),
               ElevatedButton(
                 onPressed: () async {
-                  // Dodaj logikę aktualizacji profilu użytkownika tutaj
-                  // np. await authProvider.updateProfile(nameController.text, emailController.text);
-
-                  // Przekieruj użytkownika z powrotem na stronę profilu
                   Navigator.pop(context);
                 },
-                child: Text('Save'),
+                child: const Text('Save'),
               ),
             ],
           ),

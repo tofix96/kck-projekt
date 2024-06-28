@@ -5,6 +5,8 @@ import '../providers/auth_provider.dart';
 import 'view_applications_screen.dart';
 
 class ClientTaskListScreen extends StatefulWidget {
+  const ClientTaskListScreen({super.key});
+
   @override
   _ClientTaskListScreenState createState() => _ClientTaskListScreenState();
 }
@@ -22,9 +24,8 @@ class _ClientTaskListScreenState extends State<ClientTaskListScreen> {
   Future<void> _completeTask(String taskId) async {
   try {
     await taskService.completeTask(taskId);
-    print('tasksID: $taskId');
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Task completed')),
+      const SnackBar(content: Text('Task completed')),
     );
     String? workerid = await taskService.takeIdClient(taskId); // get workerid where taskid = $taskid and status = completed
     _showReviewDialog(taskId, workerid!);
@@ -43,7 +44,7 @@ class _ClientTaskListScreenState extends State<ClientTaskListScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Add Review'),
+          title: const Text('Add Review'),
           content: Form(
             key: _formKey,
             child: Column(
@@ -51,7 +52,7 @@ class _ClientTaskListScreenState extends State<ClientTaskListScreen> {
               children: <Widget>[
                 TextFormField(
                   controller: ratingController,
-                  decoration: InputDecoration(labelText: 'Rating (1-5)'),
+                  decoration: const InputDecoration(labelText: 'Rating (1-5)'),
                   keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -66,7 +67,7 @@ class _ClientTaskListScreenState extends State<ClientTaskListScreen> {
                 ),
                 TextFormField(
                   controller: commentController,
-                  decoration: InputDecoration(labelText: 'Comment'),
+                  decoration: const InputDecoration(labelText: 'Comment'),
                   maxLines: 3,
                 ),
               ],
@@ -77,7 +78,7 @@ class _ClientTaskListScreenState extends State<ClientTaskListScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -92,7 +93,7 @@ class _ClientTaskListScreenState extends State<ClientTaskListScreen> {
                     );
                     Navigator.of(context).pop(true);
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Review added successfully')),
+                      const SnackBar(content: Text('Review added successfully')),
                     );
                   } catch (e) {
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -101,7 +102,7 @@ class _ClientTaskListScreenState extends State<ClientTaskListScreen> {
                   }
                 }
               },
-              child: Text('Submit'),
+              child: const Text('Submit'),
             ),
           ],
         );
@@ -119,17 +120,17 @@ class _ClientTaskListScreenState extends State<ClientTaskListScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Client Task List'),
+        title: const Text('Client Task List'),
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: taskService.fetchTasks(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No tasks available'));
+            return const Center(child: Text('No tasks available'));
           } else {
             final tasks = snapshot.data!.where((task) => task['client_id'] == authProvider.user!['id']).toList();
 
@@ -150,7 +151,7 @@ class _ClientTaskListScreenState extends State<ClientTaskListScreen> {
 
                             _completeTask(task['id']);
                           },
-                          child: Text('Complete'),
+                          child: const Text('Complete'),
                         ),
                       if (task['status'] == 'accepted')
                         TextButton(
@@ -165,7 +166,7 @@ class _ClientTaskListScreenState extends State<ClientTaskListScreen> {
                               _refreshTasks();
                             }
                           },
-                          child: Text('Aplikacje'),
+                          child: const Text('Aplikacje'),
                         ),
                     ],
                   ),

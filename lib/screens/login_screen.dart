@@ -7,11 +7,13 @@ class LoginScreen extends StatelessWidget {
   final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  LoginScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: const Text('Login'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -21,7 +23,7 @@ class LoginScreen extends StatelessWidget {
             children: <Widget>[
               TextFormField(
                 controller: emailController,
-                decoration: InputDecoration(labelText: 'Email'),
+                decoration: const InputDecoration(labelText: 'Email'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your email';
@@ -31,7 +33,7 @@ class LoginScreen extends StatelessWidget {
               ),
               TextFormField(
                 controller: passwordController,
-                decoration: InputDecoration(labelText: 'Password'),
+                decoration: const InputDecoration(labelText: 'Password'),
                 obscureText: true,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -57,14 +59,14 @@ class LoginScreen extends StatelessWidget {
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              title: Text('Login Failed'),
+                              title: const Text('Login Failed'),
                               content: Text(e.toString()),
                               actions: <Widget>[
                                 ElevatedButton(
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
-                                  child: Text('OK'),
+                                  child: const Text('OK'),
                                 ),
                               ],
                             );
@@ -73,14 +75,14 @@ class LoginScreen extends StatelessWidget {
                       }
                     }
                   },
-                  child: Text('Login'),
+                  child: const Text('Login'),
                 ),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/register');
                 },
-                child: Text('Don\'t have an account? Register'),
+                child: const Text('Don\'t have an account? Register'),
               ),
             ],
           ),

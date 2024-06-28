@@ -15,6 +15,7 @@ class ApplicationService {
     }
   }
 
+
   Future<void> acceptApplication(String applicationId) async {
     final response = await http.put(
       Uri.parse('$baseUrl/applications/$applicationId'),

@@ -7,7 +7,7 @@ class TaskDetailScreen extends StatelessWidget {
   final Map<String, dynamic> task;
   final TaskService taskService = TaskService();
 
-  TaskDetailScreen({required this.task});
+  TaskDetailScreen({super.key, required this.task});
 
   @override
   Widget build(BuildContext context) {
@@ -24,17 +24,17 @@ class TaskDetailScreen extends StatelessWidget {
           children: <Widget>[
             Text(
               task['title'],
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text('Description: ${task['description']}'),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text('Budget: \$${task['budget']}'),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text('Deadline: ${task['deadline']}'),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text('Status: ${task['status']}'),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             if (authProvider.user!['role'] == 'client' && task['status'] == 'pending') ...[
               ElevatedButton(
                 onPressed: () {
@@ -44,14 +44,14 @@ class TaskDetailScreen extends StatelessWidget {
                     arguments: task,
                   );
                 },
-                child: Text('Edit Task'),
+                child: const Text('Edit Task'),
               ),
               ElevatedButton(
                 onPressed: () async {
                   await taskService.deleteTask(task['id']);
                   Navigator.pop(context);
                 },
-                child: Text('Delete Task'),
+                child: const Text('Delete Task'),
               ),
             ],
           ],

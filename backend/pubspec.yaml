@@ -9,4 +9,5 @@ dependencies:
   shelf_router: ^1.0.0
   shelf_static: ^1.0.0
   postgres: ^2.3.2
+  build_runner: ^2.1.11
   shelf_cors_headers:

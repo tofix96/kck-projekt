@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../services/task_service.dart';
-import '../providers/auth_provider.dart';
 import 'view_applications_screen.dart';
 
 class TaskListScreen extends StatelessWidget {
   final TaskService taskService = TaskService();
 
+  TaskListScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
+
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Task List'),
+        title: const Text('Task List'),
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: taskService.fetchTasks(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No tasks available'));
+            return const Center(child: Text('No tasks available'));
           } else {
             final tasks = snapshot.data!;
             return ListView.builder(
@@ -38,7 +38,7 @@ class TaskListScreen extends StatelessWidget {
                     children: [
                       Text('Status: ${task['status']}'),
                       IconButton(
-                        icon: Icon(Icons.visibility),
+                        icon: const Icon(Icons.visibility),
                         onPressed: () {
                           Navigator.push(
                             context,

@@ -4,6 +4,8 @@ import '../services/task_service.dart';
 import '../providers/auth_provider.dart';
 
 class CreateTaskScreen extends StatefulWidget {
+  const CreateTaskScreen({super.key});
+
   @override
   _CreateTaskScreenState createState() => _CreateTaskScreenState();
 }
@@ -22,36 +24,36 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create Task'),
+        title: const Text('Create Task'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
             children: <Widget>[
               TextFormField(
-                decoration: InputDecoration(labelText: 'Title'),
+                decoration: const InputDecoration(labelText: 'Title'),
                 onSaved: (value) => _title = value,
                 validator: (value) => value!.isEmpty ? 'Title is required' : null,
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Description'),
+                decoration: const InputDecoration(labelText: 'Description'),
                 onSaved: (value) => _description = value,
                 validator: (value) => value!.isEmpty ? 'Description is required' : null,
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Budget'),
+                decoration: const InputDecoration(labelText: 'Budget'),
                 keyboardType: TextInputType.number,
                 onSaved: (value) => _budget = double.tryParse(value!),
                 validator: (value) => value!.isEmpty ? 'Budget is required' : null,
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Deadline'),
+                decoration: const InputDecoration(labelText: 'Deadline'),
                 onSaved: (value) => _deadline = DateTime.tryParse(value!),
                 validator: (value) => value!.isEmpty ? 'Deadline is required' : null,
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
@@ -66,7 +68,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                     Navigator.pop(context);
                   }
                 },
-                child: Text('Create Task'),
+                child: const Text('Create Task'),
               ),
             ],
           ),

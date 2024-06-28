@@ -6,23 +6,25 @@ import '../providers/auth_provider.dart';
 class WorkerAssignedTasksScreen extends StatelessWidget {
   final TaskService taskService = TaskService();
 
+  WorkerAssignedTasksScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Assigned Tasks'),
+        title: const Text('Assigned Tasks'),
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: taskService.fetchWorkerTasks(authProvider.user!['id']),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No tasks assigned'));
+            return const Center(child: Text('No tasks assigned'));
           } else {
             final tasks = snapshot.data!;
             return ListView.builder(
