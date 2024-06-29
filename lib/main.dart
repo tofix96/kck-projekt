@@ -31,12 +31,12 @@ class MyApp extends StatelessWidget {
         title: 'Outsource it',
         theme: ThemeData(
           primarySwatch: Colors.blue,
-          scaffoldBackgroundColor: Colors.transparent, // Ustawienie tła jako przezroczyste
+          scaffoldBackgroundColor: Colors.transparent,
           appBarTheme: const AppBarTheme(
-            backgroundColor: Colors.transparent, // Kolor tła AppBar
+            backgroundColor: Colors.transparent,
             elevation: 0,
             titleTextStyle: TextStyle(
-              color: Colors.black87, // Kolor tekstu w AppBar
+              color: Colors.black87,
               fontSize: 20,
             ),
             iconTheme: IconThemeData(
@@ -45,8 +45,8 @@ class MyApp extends StatelessWidget {
           ),
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all<Color>(Colors.lightBlue.shade200), // Kolor tła przycisku
-              foregroundColor: WidgetStateProperty.all<Color>(Colors.black87), // Kolor tekstu
+              backgroundColor: WidgetStateProperty.all<Color>(Colors.lightBlue.shade200),
+              foregroundColor: WidgetStateProperty.all<Color>(Colors.black87),
               padding: WidgetStateProperty.all<EdgeInsets>(const EdgeInsets.symmetric(horizontal: 24, vertical: 12)),
               textStyle: WidgetStateProperty.all<TextStyle>(
                 const TextStyle(fontSize: 16),

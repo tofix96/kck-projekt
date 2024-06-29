@@ -5,7 +5,6 @@ import 'package:mockito/mockito.dart';
 import 'package:inzynier/services/auth_service.dart';
 import 'package:inzynier/providers/auth_provider.dart';
 
-// Import the generated mocks file
 import 'auth_provider_test.mocks.dart';
 
 @GenerateMocks([AuthService])

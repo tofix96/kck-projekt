@@ -34,7 +34,6 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            // Hasło reklamujące
             const Padding(
               padding: EdgeInsets.all(16.0),
               child: Text(
